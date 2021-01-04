@@ -61,6 +61,40 @@ def print_results(results_dic, results_stats_dic, model,
                               False doesn't print anything(default) (bool) 
     Returns:
            None - simply printing results.
-    """    
+    """
+    print("\n\n*** Results Summary for CNN Model Architecture",model.upper(), "***")
+    print(f"N Images = {results_stats_dic['n_images']}\n")
+    print(f"N Dog Images = {results_stats_dic['n_dogs_img']}\n")
+    print(f"N notdogs images = {results_stats_dic['n_notdogs_img']}\n")
+
+    for key in results_stats_dic:
+        if key[0] == "p":
+            print(f"{key} = {results_stats_dic[key]}\n")
+    if (print_incorrect_dogs and
+        ( (results_stats_dic['n_correct_dogs'] + results_stats_dic['n_correct_notdogs'])
+          != results_stats_dic['n_images'] )
+       ):
+        print("\nINCORRECT Dog/NOT Dog Assignments:")
+        for key in results_dic:
+            if results_dic[key][3] + results_dic[key][4]<2:
+                if results_dic[key][4] ==1:
+                    print(f"{key} Pet Image Label is NOT-a-Dog - Classified as a-DOG")
+                else:
+                     print(f"{key} Pet Image Label is a Dog - Classified as NOT-A-DOG")
+
+    if (print_incorrect_breed and
+        (results_stats_dic['n_correct_dogs'] != results_stats_dic['n_correct_breed'])
+       ):
+        print("\nINCORRECT Dog Breed Assignment:")
+
+        # process through results dict, printing incorrectly classified breeds
+        for key in results_dic:
+
+            # Pet Image Label is-a-Dog, classified as-a-dog but is WRONG breed
+            if ( sum(results_dic[key][3:]) == 2 and
+                results_dic[key][2] == 0 ):
+                print("Real: {:>26}   Classifier: {:>30}".format(results_dic[key][0],
+                                                          results_dic[key][1]))
+
     None
                 

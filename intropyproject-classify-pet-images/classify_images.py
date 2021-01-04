@@ -63,6 +63,26 @@ def classify_images(images_dir, results_dic, model):
               classifier function to classify the pet images,
               values must be either: resnet alexnet vgg (string)
      Returns:
-           None - results_dic is mutable data type so no return needed.         
+           None - results_dic is mutable data type so no return needed.
     """
-    None 
+    image_path= ""
+    for key in results_dic :
+        image_path = images_dir + key
+        model_label = ""
+
+
+        model_label = classifier(image_path, model)
+        model_label = model_label.lower().strip()
+
+        truth = results_dic[key][0]
+        # print("====" + model_label + "=========" + truth + "======")
+        if truth in model_label:
+            results_dic[key].append(model_label)
+            results_dic[key].append(1)
+        else:
+            results_dic[key].append(model_label)
+            results_dic[key].append(0)
+
+
+
+    None

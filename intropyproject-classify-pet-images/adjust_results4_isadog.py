@@ -66,5 +66,26 @@ def adjust_results4_isadog(results_dic, dogfile):
                maltese) (string - indicates text file's filename)
     Returns:
            None - results_dic is mutable data type so no return needed.
-    """           
+    """
+    dog_name_dic = dict()
+    with open(dogfile, "r") as names:
+        for line in names:
+            name = line.rstrip()
+            if name not in dog_name_dic:
+                dog_name_dic[name] = 1
+            else:
+                print("wring duplicte value")
+
+    for key in results_dic:
+        if results_dic[key][0] in dog_name_dic:
+            if results_dic[key][1] in dog_name_dic:
+                results_dic[key].extend((1, 1))
+            else:
+                results_dic[key].extend((1, 0))
+        else:
+            if results_dic[key][1] in dog_name_dic:
+                results_dic[key].extend((0, 1))
+            else:
+                results_dic[key].extend((0, 0))
+
     None
